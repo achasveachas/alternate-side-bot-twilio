@@ -2,11 +2,12 @@ require "rails_helper"
 
 RSpec.describe "SMS request cycle", :type => :request do
 
-    @subscribe_params = {From: "+1234567890", Body: "SUBSCRIBE"}
-    @unsubscribe_params = {From: "+1234567890", Body: "UNSUBSCRIBE"}
-    @status_params = {From: "+1234567890", Body: "STATUS"}
-    @default_params = {From: "+1234567890", Body: "UNDEFINED"}
-
+    before(:each) do
+        @subscribe_params = {From: "+1234567890", Body: "SUBSCRIBE"}
+        @unsubscribe_params = {From: "+1234567890", Body: "UNSUBSCRIBE"}
+        @status_params = {From: "+1234567890", Body: "STATUS"}
+        @default_params = {From: "+1234567890", Body: "UNDEFINED"}
+    end
 
     describe "SUBSCRIBE" do
 
