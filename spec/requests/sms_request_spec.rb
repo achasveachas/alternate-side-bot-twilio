@@ -21,7 +21,14 @@ RSpec.describe "SMS request cycle", :type => :request do
             post '/twilio/sms', params: @subscribe_params
             post '/twilio/sms', params: @subscribe_params
 
-            expect(Subscriber.where(number: @subscribe_params[:From].count)).to eq(1)
+            expect(Subscriber.where(number: @subscribe_params[:From]).count).to eq(1)
+        end
+
+        it "replies with a helpful message" do
+            post '/twilio/sms', params: @subscribe_params
+
+            expect(response.body).to include("subscribed")
+
         end
 
     end
@@ -32,7 +39,7 @@ RSpec.describe "SMS request cycle", :type => :request do
             post '/twilio/sms', params: @subscribe_params
             post '/twilio/sms', params: @unsubscribe_params
 
-            expect(Subscriber.find_by([number: @subscribe_params[:From]])).to be(false)
+            expect(Subscriber.find_by(number: @subscribe_params[:From])).to be_nil
         end
 
     end
