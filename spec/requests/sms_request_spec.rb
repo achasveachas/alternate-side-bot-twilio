@@ -11,14 +11,14 @@ RSpec.describe "SMS request cycle", :type => :request do
     describe "SUBSCRIBE" do
 
         it "sending an SMS with 'SUBSCRIBE' adds a subscriber" do
-            post '/sms', params: @subscribe_params
+            post '/twilio/sms', params: @subscribe_params
 
             expect(Subscriber.last.number).to eq(@subscribe_params[:From])
         end
 
         it "sending an SMS with 'SUBSCRIBE' from an existing number does not add a subscriber" do
-            post '/sms', params: @subscribe_params
-            post '/sms', params: @subscribe_params
+            post '/twilio/sms', params: @subscribe_params
+            post '/twilio/sms', params: @subscribe_params
 
             expect(Subscriber.where(number: @subscribe_params[:From].count)).to eq(1)
         end
@@ -28,8 +28,8 @@ RSpec.describe "SMS request cycle", :type => :request do
     describe "UNSUBSCRIBE" do
 
         it "sending an SMS with 'UNSUBSCRIBE' unsubscribes that subscriber" do
-            post '/sms', params: @subscribe_params
-            post '/sms', params: @unsubscribe_params
+            post '/twilio/sms', params: @subscribe_params
+            post '/twilio/sms', params: @unsubscribe_params
 
             expect(Subscriber.find_by([number: @subscribe_params[:From]])).to be(false)
         end
@@ -41,7 +41,7 @@ RSpec.describe "SMS request cycle", :type => :request do
         xit "sending an SMS with 'STATUS' sends a reply with the latest status" do
             status1 = Status.create(body: "This is the first status")
             status2 = Status.create(body: "This is the second status")
-            post '/sms', params: @status_params
+            post '/twilio/sms', params: @status_params
 
             expect(response.body).to have_selector("Message")
             expect(response.body).to have_selector("Message")
@@ -52,7 +52,7 @@ RSpec.describe "SMS request cycle", :type => :request do
     describe "DEFAULT" do
 
         it "sending an SMS with without a recognized command returns a helpful message listing the available commands" do
-            post '/sms', params: @default_params
+            post '/twilio/sms', params: @default_params
 
             expect(response.body).to include(" SUBSCRIBE", "UNSUBSCRIBE", "STATUS")
 
