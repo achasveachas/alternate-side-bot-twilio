@@ -12,7 +12,7 @@ class TwilioController < ApplicationController
   def voice
 
     response = Twilio::TwiML::VoiceResponse.new do |r|
-      r.say(Status.last.body)
+      r.say(Status.last.to_speech)
     end
 
     render xml: response.to_s
