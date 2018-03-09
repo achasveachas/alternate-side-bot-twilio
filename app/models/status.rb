@@ -13,7 +13,7 @@ class Status < ApplicationRecord
             client.messages.create({
                 from: ENV['TWILIO_PHONE_NUMBER'],
                 to: subscriber.number,
-                body: self.to_speech
+                body: self.body
               })
         end
     end
