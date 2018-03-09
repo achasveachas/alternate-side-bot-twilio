@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'status', to: "status#status"
+  post 'status', to: "status#status"
 
   post 'twilio/sms'
 
