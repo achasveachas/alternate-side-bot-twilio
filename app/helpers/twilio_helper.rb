@@ -19,9 +19,9 @@ module TwilioHelper
             subscribe(@from)
 
         when @body.include?("STATUS")
-
+            status
         else
-
+            default_message
         end
             
 
@@ -32,15 +32,23 @@ module TwilioHelper
     def subscribe(number)
         subscriber = Subscriber.new(number: number)
         if subscriber.save
-            "#The number #{number} has been subscribed to recieve alerts. Text UNSUBSCRIBE at any time to unsubscribe."
+            "The number #{number} has been subscribed to recieve alerts. Text UNSUBSCRIBE at any time to unsubscribe."
         else
-            "The number #{number} has not been saved."
+            "Whoops! The number #{number} has not been saved. It might already be subscribed."
         end
     end
 
     def unsubscribe(subscriber)
         subscriber.destroy
         "The number #{@from} has been unsubscribed. Text SUBSCRIBE at any time to resubscribe."
+    end
+
+    def status
+        Status.last.body
+    end
+
+    def default_message
+        "Sorry I didn't get that. the available commands are SUBSCRIBE, UNSUBSCRIBE, and STATUS."        
     end
 
 end
