@@ -46,6 +46,8 @@ group :development, :test do
   gem 'pry'
   # Use RSpec for testing
   gem 'rspec-rails', '~> 3.7'
+  # Use Dotenv for handling environment variables
+  gem 'dotenv'
 end
 
 group :development do
