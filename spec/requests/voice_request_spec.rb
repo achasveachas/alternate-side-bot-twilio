@@ -12,7 +12,7 @@ RSpec.describe "Voice request cycle", :type => :request do
     it "responds with a twiml containing the latest status" do
 
         expect(response.content_type).to eq('application/xml')
-        expect(response.body).to include(@status.body)
+        expect(response.body).to include(@status.to_speech)
 
     end
 
