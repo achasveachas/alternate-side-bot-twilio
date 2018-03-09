@@ -64,8 +64,8 @@ RSpec.describe "SMS request cycle", :type => :request do
             post '/twilio/sms', params: @status_params
 
             expect(response.content_type).to eq('application/xml')
-            expect(response.body).to include("second")
-            expect(response.body).not_to include("first")
+            expect(response.body).to include(status2.body)
+            expect(response.body).not_to include(status1.body)
         end
 
     end
