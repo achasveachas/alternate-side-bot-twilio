@@ -13,6 +13,4 @@ RSpec.describe "Voice request cycle", :type => :request do
 
     end
 
-
-
 end
