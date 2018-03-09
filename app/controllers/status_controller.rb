@@ -6,6 +6,8 @@ class StatusController < ApplicationController
 
     if @status.save
       head 204
+    else
+      head 418
     end
   end
 
