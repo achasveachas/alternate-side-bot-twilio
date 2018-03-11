@@ -1,4 +1,6 @@
 class TwilioController < ApplicationController
+  before_action :authorize_request
+
   def sms
     response = helpers.parse_sms(params)
 
@@ -18,5 +20,20 @@ class TwilioController < ApplicationController
     end
 
     render xml: response.to_s
+  end
+
+  private
+
+  def authorize_request
+
+    if params[:AccountSid] != ENV['TWILIO_ACCOUNT_SID']
+
+      text = Twilio::TwiML::MessagingResponse.new do |r|
+        r.message body: "There was a problem authorizing this SMS"
+      end
+  
+      render xml: text.to_s
+    end
+    
   end
 end
