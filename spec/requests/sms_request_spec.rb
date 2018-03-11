@@ -3,10 +3,20 @@ require "rails_helper"
 RSpec.describe "SMS request cycle", :type => :request do
 
     before(:each) do
-        @subscribe_params = {From: "+1234567890", Body: "SUBSCRIBE"}
-        @unsubscribe_params = {From: "+1234567890", Body: "UNSUBSCRIBE"}
-        @status_params = {From: "+1234567890", Body: "STATUS"}
-        @default_params = {From: "+1234567890", Body: "UNDEFINED"}
+        @account_sid = ENV['TWILIO_ACCOUNT_SID']
+        @unauthorized_request = {From: "+1234567890", Body: "UNAUTHORIZED", AccountSid: "wrong-sid"}
+        @subscribe_params = {From: "+1234567890", Body: "SUBSCRIBE", AccountSid: @account_sid}
+        @unsubscribe_params = {From: "+1234567890", Body: "UNSUBSCRIBE", AccountSid: @account_sid}
+        @status_params = {From: "+1234567890", Body: "STATUS", AccountSid: @account_sid}
+        @default_params = {From: "+1234567890", Body: "UNDEFINED", AccountSid: @account_sid}
+    end
+
+    describe "Authorization" do
+        it "does not allow unauthorized requests through" do
+            post '/twilio/sms', params: @unauthorized_request
+
+            expect(response.body).to include("There was a problem authorizing this SMS")
+        end
     end
 
     describe "SUBSCRIBE" do
