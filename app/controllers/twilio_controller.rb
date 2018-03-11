@@ -13,6 +13,7 @@ class TwilioController < ApplicationController
 
     response = Twilio::TwiML::VoiceResponse.new do |r|
       r.say Status.last.to_speech
+      r.pause langth: 1
       r.say "To subscribe to get SMS messages whenever rules are suspended, text 'sunscribe' to this number"
     end
 
