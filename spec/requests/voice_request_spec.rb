@@ -4,7 +4,7 @@ RSpec.describe "Voice request cycle", :type => :request do
 
     before(:each) do
         @status = Status.create(body: "#NYCASP are in effect")
-        get '/twilio/voice'
+        get '/twilio/voice', params: {AccountSid: ENV['TWILIO_ACCOUNT_SID']}
 
     end
 
