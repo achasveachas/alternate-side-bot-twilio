@@ -12,7 +12,7 @@ module TwilioHelper
             if subscriber
                 unsubscribe(subscriber)
             else
-                "I did not find a subscriber with this number"
+                "Sorry, I did not find a subscriber with the number #{@from}."
             end
 
         when @body.include?("SUBSCRIBE")
