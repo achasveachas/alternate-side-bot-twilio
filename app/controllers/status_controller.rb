@@ -5,7 +5,6 @@ class StatusController < ApplicationController
     @status = Status.new(status_params)
 
     if @status.save
-      @status.notify_subscribers if @status.suspended
       head 204
     else
       head 418
