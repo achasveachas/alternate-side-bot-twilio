@@ -32,7 +32,7 @@ module TwilioHelper
     def subscribe(number)
         subscriber = Subscriber.new(number: number)
         if subscriber.save
-            "The number #{number} has been subscribed to recieve alerts. Text UNSUBSCRIBE at any time to unsubscribe."
+            "The number #{number} has been subscribed to receive alerts. Text UNSUBSCRIBE at any time to unsubscribe."
         else
             "Whoops! The number #{number} has not been saved. It might already be subscribed."
         end
