@@ -9,7 +9,7 @@ class Status < ApplicationRecord
     private
 
     def notify_subscribers
-        MessagingWorker.perform_async(self.body) if self.suspended
+        MessagingWorker.perform_async(self.body) if self.suspended && !self.class.second_to_last&.body&.start_with?("UPDATE")
     end
 
 end
