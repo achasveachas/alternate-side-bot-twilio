@@ -40,7 +40,7 @@ RSpec.describe Status, type: :model do
       regular_status = status_in_effect
       updated_status = status_update
       after_update = suspended_status
-      after_after_update = suspended_status
+      after_after_update = Status.create(body: "#NYCASP rules are suspended", suspended: true)
 
       expect(regular_status).not_to be_sent
       expect(updated_status).to be_sent
