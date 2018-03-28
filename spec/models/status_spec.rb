@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Status, type: :model do
 
   let(:suspended_status) {Status.create(body: "#NYCASP rules are suspended", suspended: true)}
-  let(:updated_status) {Status.create(body: "UPDATE: #NYCASP rules are suspended", suspended: true)}
+  let(:status_update) {Status.create(body: "UPDATE: #NYCASP rules are suspended", suspended: true)}
   let(:status_in_effect) {Status.create(body: "#NYCASP are in effect")}
   let(:no_body_status) {Status.create(body: "")}
 
@@ -38,7 +38,7 @@ RSpec.describe Status, type: :model do
   describe "notify subscribers" do
     it "knows when to notify subscribers" do
       regular_status = status_in_effect
-      updated_status = updated_status
+      updated_status = status_update
       after_update = suspended_status
       after_after_update = suspended_status
 
