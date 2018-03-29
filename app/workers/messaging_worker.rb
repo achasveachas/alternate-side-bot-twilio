@@ -4,13 +4,13 @@ class MessagingWorker
     def perform(message)
         client = Twilio::REST::Client.new
 
-        Subscriber.all.each do |subscriber|
+        Subscriber.find_each do |subscriber|
 
-            client.messages.create({
+            client.messages.create(
                 from: ENV['TWILIO_PHONE_NUMBER'],
                 to: subscriber.number,
                 body: message
-              })
+              )
         end
     end
 end
