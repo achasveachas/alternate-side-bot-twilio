@@ -2,6 +2,10 @@ class MessagingWorker
     include Sidekiq::Worker
    
     def perform(message)
+        self.class.notify(message)
+    end
+
+    def self.notify(message)
         client = Twilio::REST::Client.new
 
         Subscriber.find_each do |subscriber|

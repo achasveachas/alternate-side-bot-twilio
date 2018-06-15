@@ -10,7 +10,7 @@ class Status < ApplicationRecord
 
     def notify_subscribers
         if should_notify
-            MessagingWorker.perform_async(self.body)
+            MessagingWorker.notify(self.body)
             self.update_attributes(sent: true)
         end
     end
