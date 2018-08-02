@@ -16,6 +16,7 @@ RSpec.describe Subscriber, type: :model do
   it "can subscribe whatsapp numbers" do
     expect(whatsapp_subscriber).to be_valid
     expect(whatsapp_subscriber).to be_whatsapp_subscriber
+    expect(subscriber).not_to be_whatsapp_subscriber
   end
 
 end
