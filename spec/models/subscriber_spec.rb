@@ -4,13 +4,14 @@ RSpec.describe Subscriber, type: :model do
 
   let(:subscriber) {Subscriber.create(number: "+123456789")}
   let(:whatsapp_subscriber) {Subscriber.create(number: "whatsapp:+123456789")}
+  let(:invalid_subscriber) {Subscriber.create(number: "invalid-number")}
   let(:no_number_subscriber) {Subscriber.create()}
   
   
-  it "has a phone number" do
-    @valid_number = "+1234567890"
+  it "has a valid phone number" do
+    expect(subscriber).to be_valid
+    expect(invalid_subscriber).not_to be_valid
     expect(no_number_subscriber).not_to be_valid
-    expect(subscriber.number).not_to be_nil
   end
 
   it "can subscribe whatsapp numbers" do
