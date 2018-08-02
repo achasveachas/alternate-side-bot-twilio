@@ -4,6 +4,7 @@ module TwilioHelper
 
         @body = sms[:Body]&.upcase
         @from = sms[:From]
+        @pretty_from = @from.sub("whatsapp:", "")
 
         case true
         when @body.include?("UNSUBSCRIBE")
@@ -12,7 +13,7 @@ module TwilioHelper
             if subscriber
                 unsubscribe(subscriber)
             else
-                "Sorry, I did not find a subscriber with the number #{@from}."
+                "Sorry, I did not find a subscriber with the number #{@pretty_from}."
             end
 
         when @body.include?("SUBSCRIBE")
@@ -31,16 +32,17 @@ module TwilioHelper
 
     def subscribe(number)
         subscriber = Subscriber.new(number: number)
+
         if subscriber.save
-            "The number #{number} has been subscribed to receive alerts. Text UNSUBSCRIBE at any time to unsubscribe."
+            "The number #{@pretty_from} has been subscribed to receive alerts. Text UNSUBSCRIBE at any time to unsubscribe."
         else
-            "Whoops! The number #{number} has not been saved. It might already be subscribed."
+            "Whoops! The number #{@pretty_from} has not been saved. It might already be subscribed."
         end
     end
 
     def unsubscribe(subscriber)
         subscriber.destroy
-        "The number #{@from} has been unsubscribed. Text SUBSCRIBE at any time to resubscribe."
+        "The number #{@pretty_from} has been unsubscribed. Text SUBSCRIBE at any time to resubscribe."
     end
 
     def status
