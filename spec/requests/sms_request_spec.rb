@@ -5,8 +5,8 @@ RSpec.describe "SMS request cycle", :type => :request do
     before(:each) do
         @account_sid = ENV['TWILIO_ACCOUNT_SID']
         @unauthorized_request = {From: "+1234567890", Body: "UNAUTHORIZED", AccountSid: "wrong-sid"}
-        @subscribe_params = {From: "+1234567890", Body: "SUBSCRIBE", AccountSid: @account_sid}
-        @unsubscribe_params = {From: "+1234567890", Body: "UNSUBSCRIBE", AccountSid: @account_sid}
+        @subscribe_params = {From: "whatsapp:+1234567890", Body: "SUBSCRIBE", AccountSid: @account_sid}
+        @unsubscribe_params = {From: "whatsapp:+1234567890", Body: "UNSUBSCRIBE", AccountSid: @account_sid}
         @status_params = {From: "+1234567890", Body: "STATUS", AccountSid: @account_sid}
         @default_params = {From: "+1234567890", Body: "UNDEFINED", AccountSid: @account_sid}
     end
@@ -37,12 +37,22 @@ RSpec.describe "SMS request cycle", :type => :request do
             expect(Subscriber.where(number: @subscribe_params[:From]).count).to eq(1)
         end
 
-        it "replies with a helpful message" do
+        context "return message" do
 
-            expect(response.content_type).to eq('application/xml')
-            expect(response.body).to include("subscribed")
+        
+            it "replies with a helpful message" do
+    
+                expect(response.content_type).to eq('application/xml')
+                expect(response.body).to include("subscribed")
+    
+            end
+
+            it "scrubs the whatsapp substring from the number for whatsapp subscribers" do
+                expect(response.body).not_to include("whatsapp")
+            end
 
         end
+
 
     end
 
@@ -57,10 +67,16 @@ RSpec.describe "SMS request cycle", :type => :request do
             expect(Subscriber.find_by(number: @subscribe_params[:From])).to be_nil
         end
 
-        it "replies with a helpful message" do
+        context "return message" do
 
-            expect(response.content_type).to eq('application/xml')
-            expect(response.body).to include("unsubscribed")
+            it "replies with a helpful message" do
+                expect(response.content_type).to eq('application/xml')
+                expect(response.body).to include("unsubscribed")
+            end
+
+            it "scrubs the whatsapp substring from the number for whatsapp subscribers" do
+                expect(response.body).not_to include("whatsapp")
+            end
 
         end
 
