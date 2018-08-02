@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Subscriber, type: :model do
 
   let(:subscriber) {Subscriber.create(number: "+123456789")}
-  let(:whatsapp_subscriber) {Subscriber.create(number: "whatsapp+123456789")}
+  let(:whatsapp_subscriber) {Subscriber.create(number: "whatsapp:+123456789")}
   let(:no_number_subscriber) {Subscriber.create()}
   
   
