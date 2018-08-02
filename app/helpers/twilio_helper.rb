@@ -8,16 +8,16 @@ module TwilioHelper
 
         case true
         when @body.include?("UNSUBSCRIBE")
-            subscriber = Subscriber.find_by(number: @from)
+            @subscriber = Subscriber.find_by(number: @from)
 
-            if subscriber
-                unsubscribe(subscriber)
+            if @subscriber
+                unsubscribe
             else
                 "Sorry, I did not find a subscriber with the number #{@pretty_from}."
             end
 
         when @body.include?("SUBSCRIBE")
-            subscribe(@from)
+            subscribe
 
         when @body.include?("STATUS")
             status
@@ -30,8 +30,8 @@ module TwilioHelper
 
     private
 
-    def subscribe(number)
-        subscriber = Subscriber.new(number: number)
+    def subscribe
+        subscriber = Subscriber.new(number: @from)
 
         if subscriber.save
             "The number #{@pretty_from} has been subscribed to receive alerts. Text UNSUBSCRIBE at any time to unsubscribe."
@@ -40,8 +40,8 @@ module TwilioHelper
         end
     end
 
-    def unsubscribe(subscriber)
-        subscriber.destroy
+    def unsubscribe
+        @subscriber.destroy
         "The number #{@pretty_from} has been unsubscribed. Text SUBSCRIBE at any time to resubscribe."
     end
 
